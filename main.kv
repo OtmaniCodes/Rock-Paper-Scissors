@@ -1,0 +1,254 @@
+#: kivy 1.11.1
+#: import utils kivy.utils
+
+ManagerSc:
+    HomePage:
+    PlayPage:
+
+<Btn@Button>:
+    background_norml: ''
+    background_color: utils.get_color_from_hex('#FFB13B')
+    background_down: ''
+
+    
+<HomePage>:
+    name: 'home'
+    FloatLayout:
+        canvas.before:
+            Color:
+                rgba: utils.get_color_from_hex('#730000')
+            Rectangle:
+                size: self.size
+                pos: self.pos
+            Color:
+                rgba: utils.get_color_from_hex('#350505')
+            Triangle:
+                points: [0,root.size[1]*3/4, root.size[0],root.size[1]*3/4, root.size[0]/2,0]
+            Color:
+                rgba: utils.get_color_from_hex('#350505')
+            Rectangle:
+                size: root.size[0], root.size[1]/4
+                pos: 0, root.size[1]*3/4
+            Color:
+                rgba: utils.get_color_from_hex('#730000')
+            Rectangle:
+                size: root.size[0]*3/4, root.size[1]/7
+                pos: root.size[0]/8, (root.size[1]*3/4)+(root.size[1]/14)
+        Label:
+            size_hint: None, None
+            pos_hint: {'center_x':.5, 'top':.98}
+            size: self.texture_size
+            font_size: "95sp"
+            bold: True
+            color: [0,0,0,1]
+            text: 'R[color=#350505].[/color]P[color=#350505].[/color]S'
+            markup: True
+        Label:
+            text: '[b]R[/b]ock, [b]P[/b]aper, [b]S[/b]cissors'
+            size_hint: None, None
+            size: self.texture_size
+            pos_hint: {'top':.82, 'center_x':.5+.01}
+            font_size: '25sp'
+            markup: True
+            color: utils.get_color_from_hex('#730000')
+        Btn:
+            text: 'start the game'.title()
+            font_size: '35sp'
+            bold: True
+            color: [0,0,0,1]
+            size_hint: .8, .1
+            pos_hint: {'top':.46, 'x':.1}
+            on_press:
+                self.background_color= utils.get_color_from_hex('#730000')
+            on_release:
+                self.background_color= utils.get_color_from_hex('#FFB13B')
+                app.root.current='play'
+                root.manager.transition.duration= 1
+                root.manager.transition.direction= 'up'
+        Btn:
+            text: 'about the game'.title()
+            font_size: '35sp'
+            bold: True
+            color: [0,0,0,1]
+            size_hint: .8, .1
+            pos_hint: {'top':.31, 'x':.1}
+            on_press:
+                self.background_color= utils.get_color_from_hex('#730000')
+            on_release:
+                self.background_color= utils.get_color_from_hex('#FFB13B')
+        Btn:
+            text: 'exit the game'.title()
+            font_size: '35sp'
+            bold: True
+            color: [0,0,0,1]
+            size_hint: .8, .1
+            pos_hint: {'top':.16, 'x':.1}
+            on_press:
+                self.background_color= utils.get_color_from_hex('#730000')
+            on_release:
+                self.background_color= utils.get_color_from_hex('#FFB13B')
+
+<PlayPage>:
+    name: 'play'
+    img_container: img_container
+    FloatLayout:
+        canvas.before:
+            Color:
+                rgba: utils.get_color_from_hex('#730000')
+            Rectangle:
+                size: self.size
+                pos: self.pos
+            Color:
+                rgba: utils.get_color_from_hex('#FFFFFF')
+            Rectangle:
+                size: root.size[0], root.size[1]/5
+                pos: 0, root.size[1]*5.8/8
+            Color:
+                rgba: utils.get_color_from_hex("#000000")
+            Line:
+                points: [(0,root.size[1]*5.8/8), (root.size[0],root.size[1]*5.8/8)]
+                width: 5
+            Color:
+                rgba: utils.get_color_from_hex("#000000")
+            Line:
+                points: [(0,(root.size[1]*(5.8/8))+root.size[1]/5), (root.size[0],(root.size[1]*(5.8/8))+root.size[1]/5)]
+                width: 5
+            Color:
+                rgba: utils.get_color_from_hex("#000000")
+            Line:
+                points: [(root.size[0]/2,(root.size[1]*(5.8/8))), (root.size[0]/2,(root.size[1]*(2.7/8)))]
+                width: 3
+            Color:
+                rgba: utils.get_color_from_hex("#000000")
+            Line:
+                points: [(0,(root.size[1]*(2.7/8))), (root.size[0],(root.size[1]*(2.7/8)))]
+                width: 3
+        Button:
+            text: 'Go Back'
+            color: [0,0,0,1]
+            size_hint: .15, .05
+            pos_hint: {'x':.03, 'top':.99}
+            background_normal: ''
+            background_down: ''
+            background_color: utils.get_color_from_hex('#730000')
+            bold: True
+            underline: True
+            on_press:
+                self.color= utils.get_color_from_hex('#FFB13B')
+            on_release:
+                self.color= utils.get_color_from_hex('#000000')
+                app.root.current='home'
+                root.manager.transition.duration= 1
+                root.manager.transition.direction= 'down'
+        
+        Button:
+            clr: [1,1,1,1]
+            sz: [.9, .08]
+            ps: {'top':.1, 'x':.05}
+            c: [0,0,0,1]
+            text: 'GO'
+            font_size: '30sp'
+            bold: True
+            color: self.c
+            background_normal: ''
+            background_down: ''
+            background_color: self.clr
+            size_hint: self.sz
+            pos_hint: self.ps
+            on_press:
+                app.animate_go_btn1(self)
+            on_release:
+                app.animate_go_btn2(self)
+
+        BoxLayout:
+            id: img_container
+            orientation: 'horizontal'
+            size_hint: 1, .38
+            pos_hint: {'top':.72}
+            padding: 10
+            spacing: 20
+            BoxLayout:
+                orientation: 'vertical'
+                Label:
+                    text: 'you'
+                    font_size: '30sp'
+                    size_hint_y: None
+                    height: self.texture_size[1]
+                    bold: True
+                Image:
+                    source: "imgs/empty.png"
+                    allow_stretch: True
+                    keep_rotio: False
+            BoxLayout:
+                orientation: 'vertical'
+                Label:
+                    text: 'opponent'
+                    font_size: '30sp'
+                    size_hint_y: None
+                    height: self.texture_size[1]
+                    bold: True
+                Image:
+                    source: "imgs/empty.png"
+                    allow_stretch: True
+                    keep_rotio: False
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint: 1, .19
+            pos_hint: {'top': .34}
+            spacing: 5
+            padding: 10
+            Label:
+                text: 'select your option:'
+                font_size: '20sp'
+                size_hint: None, None
+                size: self.texture_size
+                color: [0,0,0,1]
+                bold: True
+            BoxLayout:
+                orientation: 'horizontal'
+                spacing: 5
+                ImageBtn:
+                    source: 'imgs/rock.png'
+                    on_press:
+                        ro.color= [1,0,0,1]
+                    on_release:
+                        ro.color= [1,1,1,1]
+                ImageBtn:
+                    source: 'imgs/scissors.png'
+                    on_press:
+                        so.color= [1,0,0,1]
+                    on_release:
+                        so.color= [1,1,1,1]
+                ImageBtn:
+                    source: 'imgs/paper.png'
+                    on_press:
+                        po.color= [1,0,0,1]
+                    on_release:
+                        po.color= [1,1,1,1]
+        BoxLayout:
+            orientation: 'horizontal'
+            spacing: 5
+            padding: 10
+            size_hint: 1, .1
+            pos_hint: {"top":.2}
+            Label:
+                id: ro
+                text: 'Rock'
+                bold: True
+                font_size: '18sp'
+                size_hint_y: None
+                height: self.texture_size[1]
+            Label:
+                id: so
+                text: 'Scissors'
+                bold: True
+                font_size: '18sp'
+                size_hint_y: None
+                height: self.texture_size[1]
+            Label:
+                id: po
+                text: 'Paper'
+                bold: True
+                font_size: '18sp'
+                size_hint_y: None
+                height: self.texture_size[1]
