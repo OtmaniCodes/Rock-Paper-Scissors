@@ -2,8 +2,11 @@
 #: import utils kivy.utils
 
 ManagerSc:
+    id: screenmanager
     HomePage:
+        id: home
     PlayPage:
+        id: play
 
 <Btn@Button>:
     background_norml: ''
@@ -77,6 +80,7 @@ ManagerSc:
                 self.background_color= utils.get_color_from_hex('#730000')
             on_release:
                 self.background_color= utils.get_color_from_hex('#FFB13B')
+                app.show_popup('about')
         Btn:
             text: 'exit the game'.title()
             font_size: '35sp'
@@ -88,11 +92,14 @@ ManagerSc:
                 self.background_color= utils.get_color_from_hex('#730000')
             on_release:
                 self.background_color= utils.get_color_from_hex('#FFB13B')
+                app.show_popup('exit')
 
 <PlayPage>:
+    id: play
+    opponent: opponent
     name: 'play'
-    img_container: img_container
     FloatLayout:
+        opponent: opponent
         canvas.before:
             Color:
                 rgba: utils.get_color_from_hex('#730000')
@@ -124,6 +131,18 @@ ManagerSc:
             Line:
                 points: [(0,(root.size[1]*(2.7/8))), (root.size[0],(root.size[1]*(2.7/8)))]
                 width: 3
+        Label:
+            id: score
+            clr: [0,0,0,.3]
+            szz: '45sp'
+            text: "the score"
+            size_hint: None, None
+            size: self.texture_size
+            color: self.clr
+            font_size: self.szz
+            pos_hint: {'center_x':.5, "top":.88}
+            bold: True
+
         Button:
             text: 'Go Back'
             color: [0,0,0,1]
@@ -136,11 +155,15 @@ ManagerSc:
             underline: True
             on_press:
                 self.color= utils.get_color_from_hex('#FFB13B')
+                score.clr= [0,0,0,.3]
+                score.szz= '45sp'
+                score.text= 'the score'
             on_release:
                 self.color= utils.get_color_from_hex('#000000')
                 app.root.current='home'
                 root.manager.transition.duration= 1
                 root.manager.transition.direction= 'down'
+                app.reset_all()
         
         Button:
             clr: [1,1,1,1]
@@ -157,12 +180,13 @@ ManagerSc:
             size_hint: self.sz
             pos_hint: self.ps
             on_press:
-                app.animate_go_btn1(self)
+                app.animate_go_btn(self, 1)
             on_release:
-                app.animate_go_btn2(self)
+                app.animate_go_btn(self, 2)
+                app.play() if app.clicked == 'yes' else app.show_popup('BtnUnclicked')
+                app.clocks=0
 
         BoxLayout:
-            id: img_container
             orientation: 'horizontal'
             size_hint: 1, .38
             pos_hint: {'top':.72}
@@ -177,6 +201,7 @@ ManagerSc:
                     height: self.texture_size[1]
                     bold: True
                 Image:
+                    id: you
                     source: "imgs/empty.png"
                     allow_stretch: True
                     keep_rotio: False
@@ -189,6 +214,7 @@ ManagerSc:
                     height: self.texture_size[1]
                     bold: True
                 Image:
+                    id: opponent
                     source: "imgs/empty.png"
                     allow_stretch: True
                     keep_rotio: False
@@ -203,7 +229,7 @@ ManagerSc:
                 font_size: '20sp'
                 size_hint: None, None
                 size: self.texture_size
-                color: [0,0,0,1]
+                color: [1,1,1,1]
                 bold: True
             BoxLayout:
                 orientation: 'horizontal'
@@ -214,18 +240,27 @@ ManagerSc:
                         ro.color= [1,0,0,1]
                     on_release:
                         ro.color= [1,1,1,1]
+                        you.source= 'imgs/rock2.png'
+                        app.clicked= 'yes'
+                        app.you= 'rock'
                 ImageBtn:
                     source: 'imgs/scissors.png'
                     on_press:
                         so.color= [1,0,0,1]
                     on_release:
                         so.color= [1,1,1,1]
+                        you.source= 'imgs/scissors2.png'
+                        app.clicked= 'yes'
+                        app.you= 'scissors'
                 ImageBtn:
                     source: 'imgs/paper.png'
                     on_press:
                         po.color= [1,0,0,1]
                     on_release:
                         po.color= [1,1,1,1]
+                        you.source= 'imgs/paper2.png'
+                        app.clicked= 'yes'
+                        app.you= 'paper'
         BoxLayout:
             orientation: 'horizontal'
             spacing: 5
@@ -253,4 +288,3 @@ ManagerSc:
                 font_size: '18sp'
                 size_hint_y: None
                 height: self.texture_size[1]
-#nothing big

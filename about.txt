@@ -1,0 +1,12 @@
+Game's Title: R.P.S
+Created By: Ahmed El Otmani
+version: 1.0.0
+
+this game is considered to be a simple
+version of the famous known game
+"Rock, Paper, Scissors", the game
+is fully made by python and the kivy
+package under the MIT license.
+
+
+2020 all rights reserved
